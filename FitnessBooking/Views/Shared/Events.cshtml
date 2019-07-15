@@ -1,0 +1,74 @@
+﻿@model FitnessBooking.ViewModels.EventsViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h1>@Model.Heading</h1>
+
+<ul class="events voffset4">
+    @foreach (var evt in Model.UpcomingEvents)
+    {
+        <li>
+            <div class="date">
+                <div class="month">
+                    @evt.DateTime.ToString("MMM")
+                </div>
+                <div class="day">
+                    @evt.DateTime.ToString("d ")
+                </div>
+            </div>
+            <div class="details">
+                <span class="instructor">
+                    @evt.Instructor.Name 
+                    @if (Model.ShowActions)
+                    {
+                        <button class="btn btn-link btn-sm js-toggle-follow" data-user-id="@evt.InstructorId">Follow</button>
+
+                    }
+                </span>
+                <span class="event">
+                    @evt.EventType.Name 
+                </span>
+                
+                @if (Model.ShowActions)
+                {
+                    <button data-evt-id="@evt.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
+
+                }
+            </div>
+        </li>  
+    }
+    
+</ul>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $(".js-toggle-attendance").click(function(e) {
+                var button = $(e.target);
+                $.post("/api/attendances", { EventId: button.attr("data-evt-id") })
+                    .done(function() {
+                        button
+                            .removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("Going");
+                    })
+                    .fail(function() {
+                        alert("something failed!");
+                    });
+            });
+
+            $(".js-toggle-follow").click(function(e) {
+                var button = $(e.target);
+                $.post("/api/followings", { FolloweeId: button.attr("data-user-id") })
+                    .done(function() {
+                        button.text("Following");
+                    })
+                    .fail(function() {
+                        alert("Something failed");
+                    });
+            });
+        });
+    </script>
+}

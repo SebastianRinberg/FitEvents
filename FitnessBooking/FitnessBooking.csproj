@@ -49,12 +49,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -167,17 +176,73 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttendancesController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
+    <Compile Include="Controllers\FollowingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Dtos\AttendanceDto.cs" />
+    <Compile Include="Dtos\FollowingDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Migrations\201907090855443_initialModel.cs" />
+    <Compile Include="Migrations\201907090855443_initialModel.Designer.cs">
+      <DependentUpon>201907090855443_initialModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907090921567_CreateEventTable.cs" />
+    <Compile Include="Migrations\201907090921567_CreateEventTable.Designer.cs">
+      <DependentUpon>201907090921567_CreateEventTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907090955116_OverrodeConventionsForEventsAndEventTypes.cs" />
+    <Compile Include="Migrations\201907090955116_OverrodeConventionsForEventsAndEventTypes.Designer.cs">
+      <DependentUpon>201907090955116_OverrodeConventionsForEventsAndEventTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907091115289_PopulateEventTypeTable.cs" />
+    <Compile Include="Migrations\201907091115289_PopulateEventTypeTable.Designer.cs">
+      <DependentUpon>201907091115289_PopulateEventTypeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907101117061_AddForeignKeyPropertiesToEvent.cs" />
+    <Compile Include="Migrations\201907101117061_AddForeignKeyPropertiesToEvent.Designer.cs">
+      <DependentUpon>201907101117061_AddForeignKeyPropertiesToEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907111014481_AddNameToApplicationUser.cs" />
+    <Compile Include="Migrations\201907111014481_AddNameToApplicationUser.Designer.cs">
+      <DependentUpon>201907111014481_AddNameToApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907121025529_AddAttendance.cs" />
+    <Compile Include="Migrations\201907121025529_AddAttendance.Designer.cs">
+      <DependentUpon>201907121025529_AddAttendance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907150755489_AddFollowing.cs" />
+    <Compile Include="Migrations\201907150755489_AddFollowing.Designer.cs">
+      <DependentUpon>201907150755489_AddFollowing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Attendance.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventType.cs" />
+    <Compile Include="Models\Following.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\EventFormViewModel.cs" />
+    <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\ExternalLoginListViewModel.cs" />
+    <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="ViewModels\ForgotViewModel.cs" />
+    <Compile Include="ViewModels\FutureDate.cs" />
+    <Compile Include="ViewModels\EventsViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\SendCodeViewModel.cs" />
+    <Compile Include="ViewModels\ValidTime.cs" />
+    <Compile Include="ViewModels\VerifyCodeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -214,7 +279,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Events.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -235,6 +300,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Events\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -251,6 +317,32 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201907090855443_initialModel.resx">
+      <DependentUpon>201907090855443_initialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907090921567_CreateEventTable.resx">
+      <DependentUpon>201907090921567_CreateEventTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907090955116_OverrodeConventionsForEventsAndEventTypes.resx">
+      <DependentUpon>201907090955116_OverrodeConventionsForEventsAndEventTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907091115289_PopulateEventTypeTable.resx">
+      <DependentUpon>201907091115289_PopulateEventTypeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907101117061_AddForeignKeyPropertiesToEvent.resx">
+      <DependentUpon>201907101117061_AddForeignKeyPropertiesToEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907111014481_AddNameToApplicationUser.resx">
+      <DependentUpon>201907111014481_AddNameToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907121025529_AddAttendance.resx">
+      <DependentUpon>201907121025529_AddAttendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907150755489_AddFollowing.resx">
+      <DependentUpon>201907150755489_AddFollowing.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
