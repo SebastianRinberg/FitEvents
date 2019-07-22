@@ -1,0 +1,12 @@
+﻿@model IEnumerable<FitnessBooking.Models.ApplicationUser>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Who I Follow</h1>
+<ul class="voffset4">
+    @foreach (var instructor in Model)
+    {
+        <li>@instructor.Name</li>
+    }
+</ul>

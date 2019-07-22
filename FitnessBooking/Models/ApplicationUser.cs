@@ -17,11 +17,13 @@ namespace FitnessBooking.Models
 
         public ICollection<Following> Followers { get; set; }
         public ICollection<Following> Followees { get; set; }
+        public ICollection<UserNotification> UserNotifications { get; set; }
 
         public ApplicationUser()
         {
             Followers = new Collection<Following>();
             Followees = new Collection<Following>();
+            UserNotifications = new Collection<UserNotification>();
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -31,5 +33,13 @@ namespace FitnessBooking.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        //Notification Method som tager imod 2 argumenter (user og notification)
+        public void Notify(Notification notification)
+        {
+            UserNotifications.Add(new UserNotification(this, notification));
+        }
     }
+
+
 }

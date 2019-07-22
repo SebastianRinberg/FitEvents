@@ -1,10 +1,10 @@
-﻿using FitnessBooking.Dtos;
+﻿using System.Linq;
+using System.Web.Http;
+using FitnessBooking.Dtos;
 using FitnessBooking.Models;
 using Microsoft.AspNet.Identity;
-using System.Linq;
-using System.Web.Http;
 
-namespace FitnessBooking.Controllers
+namespace FitnessBooking.Controllers.Api
 {
     [Authorize]
     public class AttendancesController : ApiController

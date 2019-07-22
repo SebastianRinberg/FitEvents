@@ -1,4 +1,5 @@
-﻿@model FitnessBooking.ViewModels.EventsViewModel
+﻿@using System.Web.Razor.Parser.SyntaxTree
+@model FitnessBooking.ViewModels.EventsViewModel
 
 @{
     ViewBag.Title = "Home Page";
@@ -21,6 +22,11 @@
             <div class="details">
                 <span class="instructor">
                     @evt.Instructor.Name 
+                    
+                    @if (evt.IsCanceled)
+                    {
+                        <span class="label label-warning">Canceled</span>
+                    }
                     @if (Model.ShowActions)
                     {
                         <button class="btn btn-link btn-sm js-toggle-follow" data-user-id="@evt.InstructorId">Follow</button>
@@ -31,7 +37,7 @@
                     @evt.EventType.Name 
                 </span>
                 
-                @if (Model.ShowActions)
+                @if (Model.ShowActions && !evt.IsCanceled)
                 {
                     <button data-evt-id="@evt.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
 

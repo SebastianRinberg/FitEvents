@@ -1,13 +1,15 @@
 ﻿@model FitnessBooking.ViewModels.EventFormViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = Model.Heading;
 }
 
-<h2>Add Event</h2>
+<h2>@Model.Heading</h2>
 
-@using (Html.BeginForm("Create", "Events"))
+@using (Html.BeginForm(Model.Action, "Events"))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
     <div class="form-group">
         @Html.LabelFor(m => m.Description)
         @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
@@ -28,7 +30,7 @@
         @Html.DropDownListFor(m => m.EventType, new SelectList(Model.EventTypes, "Id", "Name"), "", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.EventType)
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary btn-lg">Save</button>
 }
 
 

@@ -9,6 +9,8 @@ namespace FitnessBooking.Models
         public DbSet<EventType> EventTypes { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Following> Followings { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UserNotification> UserNotifications { get; set; }
 
 
         public ApplicationDbContext()
@@ -25,7 +27,7 @@ namespace FitnessBooking.Models
         {
             modelBuilder.Entity<Attendance>()
                 .HasRequired(a => a.Event)
-                .WithMany()
+                .WithMany(e => e.Attendances)
                 .WillCascadeOnDelete(false);
 
 
@@ -39,6 +41,10 @@ namespace FitnessBooking.Models
                 .WithRequired(f => f.Follower)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<UserNotification>()
+                .HasRequired(n => n.User)
+                .WithMany(u => u.UserNotifications)
+                .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }

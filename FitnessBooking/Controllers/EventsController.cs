@@ -1,6 +1,7 @@
 ﻿using FitnessBooking.Models;
 using FitnessBooking.ViewModels;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -13,6 +14,22 @@ namespace FitnessBooking.Controllers
         public EventsController()
         {
             _context = new ApplicationDbContext();
+        }
+
+
+        [Authorize]
+        public ActionResult Mine()
+        {
+            var userId = User.Identity.GetUserId();
+            var events = _context.Events
+                .Where(e =>
+                    e.InstructorId == userId &&
+                    e.DateTime > DateTime.Now &&
+                    !e.IsCanceled)
+                .Include(e => e.EventType)
+                .ToList();
+
+            return View(events);
         }
 
         [Authorize]
@@ -41,9 +58,29 @@ namespace FitnessBooking.Controllers
         {
             var viewModel = new EventFormViewModel
             {
-                EventTypes = _context.EventTypes.ToList()
+                EventTypes = _context.EventTypes.ToList(),
+                Heading = "Add an Event"
+
             };
-            return View(viewModel);
+            return View("EventForm", viewModel);
+        }
+
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var eEvent = _context.Events.Single(e => e.Id == id && e.InstructorId == userId);
+            var viewModel = new EventFormViewModel
+            {
+                Heading = "Edit Event",
+                Id = eEvent.Id,
+                EventTypes = _context.EventTypes.ToList(),
+                Date = eEvent.DateTime.ToString("d MMM yyyy"),
+                Time = eEvent.DateTime.ToString("HH:mm"),
+                EventType = eEvent.EventTypeId,
+                Description = eEvent.Description
+            };
+            return View("EventForm", viewModel);
         }
 
         [Authorize]
@@ -54,7 +91,7 @@ namespace FitnessBooking.Controllers
             if (!ModelState.IsValid)
             {
                 viewModel.EventTypes = _context.EventTypes.ToList();
-                return View("Create", viewModel);
+                return View("EventForm", viewModel);
             }
 
 
@@ -67,7 +104,35 @@ namespace FitnessBooking.Controllers
             };
             _context.Events.Add(newEvent);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Mine", "Events");
         }
+
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(EventFormViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                viewModel.EventTypes = _context.EventTypes.ToList();
+                return View("EventForm", viewModel);
+            }
+
+            var UserId = User.Identity.GetUserId();
+
+            var eEvent = _context.Events
+                .Include(e => e.Attendances.Select(a => a.Attendee))
+                .Single(e => e.Id == viewModel.Id && e.InstructorId == UserId);
+
+            eEvent.Modify(viewModel.GetDateTime(), viewModel.Description, viewModel.EventType);
+
+            _context.SaveChanges();
+            return RedirectToAction("Mine", "Events");
+        }
+
+
+
     }
 }
+
