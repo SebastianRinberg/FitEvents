@@ -11,6 +11,7 @@ namespace FitnessBooking.ViewModels
     public class EventFormViewModel
     {
         public int Id { get; set; }
+
         [Required]
         public string Description { get; set; }
 

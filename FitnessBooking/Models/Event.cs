@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace FitnessBooking.Models
 {
+    //Model som repræsenterer et event. 
+    //Navigation properties linker de forskellige models sammen.
+    //Overskriver entity framework conventions med data annotations  
     public class Event
     {
         public int Id { get; set; }
@@ -36,7 +39,6 @@ namespace FitnessBooking.Models
         {
             Attendances = new Collection<Attendance>();
         }
-
 
 
         //Methods

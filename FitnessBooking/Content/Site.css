@@ -19,6 +19,10 @@ select,
 textarea {
   max-width: 280px;
 }
+span.field-validation-error {
+  color: red;
+  font-weight: bold;
+}
 .voffset {
   margin-top: 2px;
 }
@@ -99,9 +103,10 @@ h6,
   height: 44px;
   -ms-border-radius: 9px;
   border-radius: 9px;
+  transition: none;
+  -webkit-transition: none;
 }
 .form-control:focus {
-  border-color: #2196F3;
   -Webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -171,4 +176,10 @@ h6,
 }
 .popover-notifications ul.notifications .highlight {
   font-weight: bold;
+}
+.search-event {
+  width: 300px;
+}
+.search-event input {
+  max-width: none;
 }

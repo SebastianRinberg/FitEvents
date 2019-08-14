@@ -239,6 +239,14 @@
     <Compile Include="Migrations\201907170938306_AddNotification.Designer.cs">
       <DependentUpon>201907170938306_AddNotification.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907240818148_RePopulateEventTypeTable.cs" />
+    <Compile Include="Migrations\201907240818148_RePopulateEventTypeTable.Designer.cs">
+      <DependentUpon>201907240818148_RePopulateEventTypeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907240836397_RemoveEventsFromDatabase.cs" />
+    <Compile Include="Migrations\201907240836397_RemoveEventsFromDatabase.Designer.cs">
+      <DependentUpon>201907240836397_RemoveEventsFromDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -252,6 +260,7 @@
     <Compile Include="Models\UserNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\EventDetailsViewModel.cs" />
     <Compile Include="ViewModels\EventFormViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginListViewModel.cs" />
@@ -286,6 +295,11 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <None Include="Content\Site.less" />
+    <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\Controllers\EventDetailsController.js" />
+    <Content Include="Scripts\app\Controllers\EventsController.js" />
+    <Content Include="Scripts\app\Services\AttendanceService.js" />
+    <Content Include="Scripts\app\Services\FollowingService.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -339,6 +353,7 @@
     <Content Include="Views\Events\EventForm.cshtml" />
     <Content Include="Views\Followee\Index.cshtml" />
     <Content Include="Views\Events\Mine.cshtml" />
+    <Content Include="Views\Events\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -386,6 +401,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907170938306_AddNotification.resx">
       <DependentUpon>201907170938306_AddNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907240818148_RePopulateEventTypeTable.resx">
+      <DependentUpon>201907240818148_RePopulateEventTypeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907240836397_RemoveEventsFromDatabase.resx">
+      <DependentUpon>201907240836397_RemoveEventsFromDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

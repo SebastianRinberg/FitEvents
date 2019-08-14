@@ -7,7 +7,20 @@
 
 <h1>@Model.Heading</h1>
 
-<ul class="events voffset4">
+@using (Html.BeginForm("Search", "Events"))
+{
+    <div class="form-group search-event">
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.SearchTerm, new {@class = "form-control", placeholder = "Search by instructor or event"})
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+        </div>
+    </div>
+}
+
+
+<ul id="events" class="events voffset4">
     @foreach (var evt in Model.UpcomingEvents)
     {
         <li>
@@ -21,16 +34,13 @@
             </div>
             <div class="details">
                 <span class="instructor">
-                    @evt.Instructor.Name 
-                    
+                    <a href="@Url.Action("Details", "Events", new {id = evt.Id})">
+                        @evt.Instructor.Name
+                    </a>
+
                     @if (evt.IsCanceled)
                     {
                         <span class="label label-warning">Canceled</span>
-                    }
-                    @if (Model.ShowActions)
-                    {
-                        <button class="btn btn-link btn-sm js-toggle-follow" data-user-id="@evt.InstructorId">Follow</button>
-
                     }
                 </span>
                 <span class="event">
@@ -39,7 +49,13 @@
                 
                 @if (Model.ShowActions && !evt.IsCanceled)
                 {
-                    <button data-evt-id="@evt.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
+                    <button
+                        data-evt-id="@evt.Id"
+                        class="btn 
+                            @(Model.Attendances.Contains(evt.Id) ? "btn-info" : "btn-default") 
+                            btn-sm pull-right js-toggle-attendance">
+                            @(Model.Attendances.Contains(evt.Id) ? "Going" : "Going?")
+                    </button>
 
                 }
             </div>
@@ -51,30 +67,7 @@
 {
     <script>
         $(document).ready(function() {
-            $(".js-toggle-attendance").click(function(e) {
-                var button = $(e.target);
-                $.post("/api/attendances", { EventId: button.attr("data-evt-id") })
-                    .done(function() {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going");
-                    })
-                    .fail(function() {
-                        alert("something failed!");
-                    });
-            });
-
-            $(".js-toggle-follow").click(function(e) {
-                var button = $(e.target);
-                $.post("/api/followings", { FolloweeId: button.attr("data-user-id") })
-                    .done(function() {
-                        button.text("Following");
-                    })
-                    .fail(function() {
-                        alert("Something failed");
-                    });
-            });
+            EventsController.init("#events");
         });
     </script>
 }
